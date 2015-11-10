@@ -2,6 +2,11 @@ Nav = React.createClass({
     getNavItems() {
         return [
             {
+                name: "Focus",
+                url: "/focus",
+                active: false
+            },
+            {
                 name: "Tasks Log",
                 url: "/tasks-log",
                 active: false,
@@ -14,6 +19,17 @@ Nav = React.createClass({
         return this.getNavItems().map((item) => {
             return <NavItem key={item.url} item={item} />;
         });
+    },
+
+    renderCurrentUser() {
+        var _user = Meteor.user();
+        if (_user) {
+            return (
+                <div className="navbar-right">
+                    <p className="navbar-text text-right">{_user.profile.username}</p>
+                </div>
+            );
+        }
     },
 
     render() {
@@ -33,6 +49,7 @@ Nav = React.createClass({
                         <ul className="nav navbar-nav">
                             {this.renderNavItems()}
                         </ul>
+                        {this.renderCurrentUser()}
                     </div>
                 </div>
             </nav>

@@ -5,6 +5,15 @@ FlowRouter.route('/', {
     }
 });
 
+FlowRouter.route('/focus', {
+    action: function() {
+        setActiveLink();
+        Meteor.lockstep.checkOrCreateUser(() => {
+            ReactLayout.render(App, {content: <Focus />});
+        });
+    }
+});
+
 FlowRouter.route('/tasks-log', {
     action: function() {
         setActiveLink();
