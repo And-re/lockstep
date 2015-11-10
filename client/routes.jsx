@@ -1,17 +1,17 @@
-FlowRouter.route("/", {
+FlowRouter.route('/', {
     action: function() {
         setActiveLink();
-        ReactLayout.render(TLayout, { content: <TAnnouncement /> });
+        ReactLayout.render(App, { content: <Home /> });
     }
 });
 
-FlowRouter.route("/history", {
+FlowRouter.route('/tasks-log', {
     action: function() {
         setActiveLink();
-        ReactLayout.render(TLayout, { content: <THistory /> });
+        ReactLayout.render(App, { content: <TasksLog /> });
     }
 });
 
 var setActiveLink = function() {
-    Session.set("activeUrl", FlowRouter.current().route.path);
+    Session.set('activeUrl', FlowRouter.current().route.path);
 };

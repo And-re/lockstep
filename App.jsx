@@ -1,8 +1,8 @@
-TLayout = React.createClass({
+App = React.createClass({
     render() {
         return (
             <div id="main">
-                <THeader />
+                <Nav />
 
                 <div className="container">
                     {this.props.content}
