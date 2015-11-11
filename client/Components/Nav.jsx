@@ -26,7 +26,7 @@ Nav = React.createClass({
         if (_user) {
             return (
                 <div className="navbar-right">
-                    <p className="navbar-text text-right">{_user.profile.username}</p>
+                    <p className="navbar-text text-right">{_user.profile.name}</p>
                 </div>
             );
         }

@@ -2,8 +2,10 @@ Focus = React.createClass({
     mixins: [ReactMeteorData],
 
     getMeteorData() {
-        return {
+        Meteor.subscribe('teamMembers');
 
+        return {
+            users: Meteor.users.find({}, {sort: {createdAt: 1}}).fetch()
         };
     },
 
@@ -13,9 +15,11 @@ Focus = React.createClass({
                 <div className="col-md-6">
                     <div className="panel panel-primary">
                         <div className="panel-heading">Tasks</div>
-                        <div className="panel-body">
-                            Tasks
-                        </div>
+                        <ul className="list-group">
+                            {this.data.users.map((user) => {
+                                return <li key={user._id} className="list-group-item">{user.profile.name}</li>;
+                            })}
+                        </ul>
                     </div>
                 </div>
                 <div className="col-md-6">
