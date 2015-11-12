@@ -1,33 +1,49 @@
-FlowRouter.route('/', {
-    name: 'home',
-    action() {
-        ReactLayout.render(App, { content: <Home /> });
+Routes = [
+    {
+        url: '/',
+        title: 'Lockstep',
+        name: 'home',
+        action() {
+            ReactLayout.render(App, { content: <Home /> });
+        }
+    },
+    {
+        url: '/focus/:teamId?',
+        path: '/focus',
+        title: 'Focus',
+        name: 'focus',
+        action(params) {
+            console.log(params);
+            Meteor.lockstep.checkOrCreateUser(() => {
+                if (checkTeamId(params.teamId)) {
+                    Meteor.call('joinTeam', params.teamId, (error, teamId) => {
+                        ReactLayout.render(App, {content: <Focus />});
+                    });
+                } else {
+                    Meteor.call('findAndJoinTeam', (error, teamId) => {
+                        //FlowRouter.go('focus', {teamId});
+                        FlowRouter.setParams({teamId}); //alternative
+                    });
+                }
+            });
+        }
+    },
+    {
+        url: '/tasks-log',
+        title: 'Tasks Log',
+        name: 'tasks-log',
+        auth: true,
+        action() {
+            ReactLayout.render(App, { content: <TasksLog /> });
+        }
     }
-});
+];
 
-FlowRouter.route('/focus/:teamId?', {
-    name: 'focus',
-    action(params) {
-        Meteor.lockstep.checkOrCreateUser(() => {
-            if (checkTeamId(params.teamId)) {
-                Meteor.call('joinTeam', params.teamId, (error, teamId) => {
-                    ReactLayout.render(App, {content: <Focus />});
-                });
-            } else {
-                Meteor.call('findAndJoinTeam', (error, teamId) => {
-                    FlowRouter.go('focus', {teamId});
-                    //FlowRouter.setParams({teamId}); //alternative
-                });
-            }
-        });
-    }
-});
-
-FlowRouter.route('/tasks-log', {
-    name: 'tasks-log',
-    action() {
-        ReactLayout.render(App, { content: <TasksLog /> });
-    }
+_.each(Routes, (route) => {
+    FlowRouter.route(route.url, {
+        name: route.name,
+        action: route.action
+    });
 });
 
 FlowRouter.notFound = {

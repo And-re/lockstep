@@ -1,20 +1,6 @@
 Nav = React.createClass({
     getNavItems() {
-        return [
-            {
-                name: 'Lockstep',
-                url: '/'
-            },
-            {
-                name: 'Focus',
-                url: '/focus'
-            },
-            {
-                name: 'Tasks Log',
-                url: '/tasks-log',
-                logIn: true
-            }
-        ];
+        return Routes;
     },
 
     renderNavItems() {

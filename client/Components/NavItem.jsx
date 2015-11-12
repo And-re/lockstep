@@ -16,7 +16,7 @@ NavItem = React.createClass({
 
         return (
             <li className={classes}>
-                <a href={this.props.item.url}>{this.props.item.name}</a>
+                <a href={this.props.item.path ? this.props.item.path : this.props.item.url}>{this.props.item.title}</a>
             </li>
         );
     }
