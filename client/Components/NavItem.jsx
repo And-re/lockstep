@@ -3,15 +3,15 @@ NavItem = React.createClass({
         item: React.PropTypes.object.isRequired
     },
 
-    isActive() {
-        return Session.equals('activeUrl', this.props.item.url);
+    isActive(url) {
+        let parts = FlowRouter.current().path.split('/');
+
+        return (`/${parts[1]}` === url);
     },
 
     render() {
-        this.props.item.active = this.isActive();
-
         var classes = classNames({
-            'active': this.props.item.active
+            'active': this.isActive(this.props.item.url)
         });
 
         return (

@@ -2,14 +2,16 @@ Nav = React.createClass({
     getNavItems() {
         return [
             {
-                name: "Focus",
-                url: "/focus",
-                active: false
+                name: 'Lockstep',
+                url: '/'
             },
             {
-                name: "Tasks Log",
-                url: "/tasks-log",
-                active: false,
+                name: 'Focus',
+                url: '/focus'
+            },
+            {
+                name: 'Tasks Log',
+                url: '/tasks-log',
                 logIn: true
             }
         ];
@@ -43,7 +45,6 @@ Nav = React.createClass({
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                         </button>
-                        <a className="navbar-brand" href="/">Lockstep</a>
                     </div>
                     <div id="navbar" className="collapse navbar-collapse">
                         <ul className="nav navbar-nav">

@@ -1,11 +1,9 @@
 Meteor.methods({
-    findAndJoinTeam: function() {
-        console.log('findAndJoinTeam', this.userId);
+    findAndJoinTeam() {
+        let _teamId;
+        let _previousTeam;
 
-        var _teamId;
-        var _previousTeam;
-
-        var _user = Meteor.user();
+        let _user = Meteor.user();
 
         if (_user.currentTeam) {
             _previousTeam = Teams.findOne({_id: _user.currentTeam});
@@ -26,7 +24,7 @@ Meteor.methods({
 
         return _teamId;
     },
-    joinTeam: function(teamId) {
+    joinTeam(teamId) {
         check(teamId, String);
 
         Meteor.lockstep.addUserToTeam(this.userId, teamId);
