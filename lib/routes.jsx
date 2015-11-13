@@ -36,6 +36,17 @@ Routes = [
         action() {
             ReactLayout.render(App, { content: <TasksLog /> });
         }
+    },
+    {
+        url: '/logout',
+        title: 'Logout',
+        name: 'logout',
+        auth: true,
+        action() {
+            Meteor.logout(() => {
+                FlowRouter.go('home');
+            });
+        }
     }
 ];
 

@@ -1,6 +1,11 @@
 Nav = React.createClass({
     getNavItems() {
-        return Routes;
+        return _.filter(Routes, (route) => {
+            if (!route.auth || Meteor.user()) {
+                return route;
+            }
+        });
+        //return Routes;
     },
 
     renderNavItems() {
