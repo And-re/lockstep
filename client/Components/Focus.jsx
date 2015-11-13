@@ -3,25 +3,21 @@ Focus = React.createClass({
 
     getMeteorData() {
         Meteor.subscribe('teamMembers');
+        Meteor.subscribe('myTeam');
 
         return {
             users: Meteor.users.find({}, {sort: {createdAt: 1}}).fetch(),
-            team: Teams.find(Meteor.user().currentTeam).fetch()
+            team: Teams.findOne({_id: Meteor.user().currentTeam})
         };
     },
 
     toggleChecked() {
-        //this.data.team.private = ! this.data.team.private;
-        //this.data.team.save();
-        Teams.update(this.data.team._id, {
-            $set: {private: ! this.data.team.private}
-        });
+        Meteor.call('setPrivateTeam', this.data.team._id, !this.data.team.private);
     },
 
     render() {
         return (
             <div className="row">
-
                 <div className="col-md-6">
                     <div className="panel panel-primary">
                         <div className="panel-heading">Tasks</div>
@@ -36,11 +32,14 @@ Focus = React.createClass({
                         <div className="panel-body">
                             <div className="checkbox">
                                 <label>
-                                    <input type="checkbox"
-                                           readOnly={true}
-                                           checked={this.data.team.private}
-                                           onClick={this.toggleChecked}
-                                    /> Private
+                                    {this.data.team ?
+                                        <input type="checkbox"
+                                               readOnly={true}
+                                               checked={this.data.team.private}
+                                               onClick={this.toggleChecked}
+                                        />
+                                        : ''
+                                    } Private
                                 </label>
                             </div>
                         </div>

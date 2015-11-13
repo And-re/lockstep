@@ -13,7 +13,6 @@ Routes = [
         title: 'Focus',
         name: 'focus',
         action(params) {
-            console.log(params);
             Meteor.lockstep.checkOrCreateUser(() => {
                 if (checkTeamId(params.teamId)) {
                     Meteor.call('joinTeam', params.teamId, (error, teamId) => {

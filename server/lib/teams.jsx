@@ -30,5 +30,13 @@ Meteor.methods({
         Meteor.lockstep.addUserToTeam(this.userId, teamId);
 
         return teamId;
+    },
+    setPrivateTeam(teamId, isPrivate) {
+        check(teamId, String);
+        check(isPrivate, Boolean);
+
+        Teams.update(teamId, {
+            $set: {private: isPrivate}
+        });
     }
 });
