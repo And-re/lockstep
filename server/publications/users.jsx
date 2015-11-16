@@ -6,6 +6,10 @@
 //});
 
 Meteor.publish('teamMembers', function () {
+    if (!this.userId) {
+        return [];
+    }
+
     let _user = Meteor.users.findOne({_id: this.userId});
 
     return Meteor.users.find(

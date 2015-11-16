@@ -5,7 +5,7 @@ Meteor.methods({
 
         let _user = Meteor.user();
 
-        if (_user.currentTeam) {
+        if (_user && _user.currentTeam) {
             _previousTeam = Teams.findOne({_id: _user.currentTeam});
         }
 
@@ -20,12 +20,20 @@ Meteor.methods({
                 _teamId = _openTeam._id;
             }
         }
-        Meteor.lockstep.addUserToTeam(this.userId, _teamId);
+        if (this.userId) {
+            Meteor.lockstep.addUserToTeam(this.userId, _teamId);
+        }
 
         return _teamId;
     },
     joinTeam(teamId) {
         check(teamId, String);
+
+        let _team = Teams.findOne({_id: teamId});
+
+        if (!_team) {
+            teamId = Teams.insert({userIds: [this.userId], private: false});
+        }
 
         Meteor.lockstep.addUserToTeam(this.userId, teamId);
 
