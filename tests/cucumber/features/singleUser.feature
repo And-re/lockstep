@@ -12,10 +12,12 @@ Feature: Single user focuses
   Scenario: New team is public by default
     Given I am a new user
     When Alice goes to "/focus"
-    Then Alice should see her team as public
+#    Then Alice should see the team is not private
+    Then Alice should see the team's private field set to "false"
 
   Scenario: Make team private
     Given I am a new user
     When Alice goes to "/focus"
     And Alice checks the private checkbox
-    Then Alice should see her team as private
+    Then Alice should see the team is private
+#    Then Alice should see the team's private field set to "true"

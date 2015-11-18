@@ -34,16 +34,25 @@ module.exports = function() {
         browsers[person].waitForExist(_nameContainer);
     });
 
-    this.Then(/^([^ ]*) should see (her|his) team as public$/, function (person) {
+    this.Then(/^([^ ]*) should see the team's private field set to "([^"]*)"$/, function (person, isSelected) {
         var _checkbox = 'input[type=checkbox]';
         browsers[person].waitForExist(_checkbox);
-        expect(browsers[person].getAttribute(_checkbox, 'checked')).toBeFalsy();
+        isSelected = (isSelected.toLowerCase() == 'true');
+        expect(browsers[person].isSelected(_checkbox)).toBe(isSelected);
     });
 
-    this.Then(/^([^ ]*) should see (her|his) team as private/, function (person) {
+    this.Then(/^([^ ]*) should see the team is( not)? private$/, function (person, boolean) {
         var _checkbox = 'input[type=checkbox]';
         browsers[person].waitForExist(_checkbox);
-        expect(browsers[person].getAttribute(_checkbox, 'checked')).toBeTruthy();
+        var isSelected = !boolean;
+
+        // only works after using waitForExist
+        var _isPrivate = browsers[person].execute(function () {
+            return Teams.findOne(Meteor.user().currentTeam).private;
+        }).value;
+
+        expect(browsers[person].isSelected(_checkbox)).toBe(isSelected);
+        expect(_isPrivate).toBe(isSelected);
     });
 
     this.When(/^([^ ]*) checks the private checkbox$/, function (person) {
