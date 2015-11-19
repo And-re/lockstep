@@ -7,7 +7,7 @@ module.exports = function() {
     };
 
     this.Given(/^I am a new user$/, function () {
-        browsers.Alice = client;
+        browsers.Alice = browser.browsers[0];
     });
 
     this.When(/^([^ ]*) goes to "([^"]*)"$/, function (person, relativePath) {
