@@ -27,7 +27,7 @@ Focus = React.createClass({
                     </div>
                 </div>
                 <div className="col-md-6">
-                    <div className="panel panel-primary">
+                    <div id="team-panel" className="panel panel-primary">
                         <div className="panel-heading">Team</div>
                         <div className="panel-body">
                             <div className="checkbox">

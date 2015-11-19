@@ -1,6 +1,6 @@
 var url = require('url');
 
-module.exports = function() {
+module.exports = function () {
 
     var browsers = {
         Alice: {}
@@ -8,6 +8,7 @@ module.exports = function() {
 
     this.Given(/^I am a new user$/, function () {
         browsers.Alice = browser.browsers[0];
+        browsers.Bob = browser.browsers[1];
     });
 
     this.When(/^([^ ]*) goes to "([^"]*)"$/, function (person, relativePath) {
@@ -28,7 +29,7 @@ module.exports = function() {
 
     this.Then(/^([^ ]*) should see (her|his) name in navbar$/, function (person) {
         var _name = browsers[person].execute(function () {
-            return Meteor.user().profile.name;
+            return (Meteor.user() && Meteor.user().profile.name);
         }).value;
         var _nameContainer = 'p.navbar-text=' + _name;
         browsers[person].waitForExist(_nameContainer);

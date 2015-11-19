@@ -12,8 +12,8 @@ Feature: Single user focuses
   Scenario: New team is public by default
     Given I am a new user
     When Alice goes to "/focus"
-#    Then Alice should see the team is not private
-    Then Alice should see the team's private field set to "false"
+    Then Alice should see the team is not private
+#    Then Alice should see the team's private field set to "false"
 
   Scenario: Make team private
     Given I am a new user
