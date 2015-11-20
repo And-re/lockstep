@@ -2,18 +2,24 @@ var url = require('url');
 
 module.exports = function () {
 
-    var browsers = {
-        Alice: {}
-    };
+    var browsers = {};
 
-    this.Given(/^I am a new user$/, function () {
+    function getBrowserFor(person) {
+        return (person === 'Both') ? browser : browsers[person];
+    }
+
+    /**
+     * Definitions
+     */
+    this.Given(/^There (is|are) (one|two) user(s)?$/, function () {
         browsers.Alice = browser.browsers[0];
         browsers.Bob = browser.browsers[1];
+
+        this.server.call('reset');
     });
 
-    this.When(/^([^ ]*) goes to "([^"]*)"$/, function (person, relativePath) {
-
-        browsers[person].url(url.resolve(process.env.ROOT_URL, relativePath));
+    this.When(/^([^ ]*) go(?:es)? to "([^"]*)"$/, function (person, relativePath) {
+        getBrowserFor(person).url(url.resolve(process.env.ROOT_URL, relativePath));
     });
 
     this.When(/^([^ ]*) should not be logged in$/, function (person) {
@@ -60,5 +66,25 @@ module.exports = function () {
         var _checkbox = 'input[type=checkbox]';
         browsers[person].waitForExist(_checkbox);
         browsers[person].click(_checkbox);
+    });
+
+    this.Then(/^([^ ]*) should see (her|his|the other person) name in team panel$/, function(person, direction) {
+        browsers[person].waitForExist('.cucumber-user:nth-child(2)');
+        var _name = browsers[person].execute(function(direction) {
+            var _userId;
+            if (direction === 'the other person') {
+                var _currentTeamId = Meteor.user().currentTeam;
+                var _currentTeam = Teams.findOne(_currentTeamId);
+                _userId = _.reject(_currentTeam.userIds, function(userId) {
+                    return userId === Meteor.userId()
+                })[0];
+            } else {
+                _userId = Meteor.userId();
+            }
+            console.log("_userId ", _userId);
+            return Meteor.users.findOne(_userId).profile.name;
+        }, direction).value;
+        var _nameContainer = '.cucumber-user=' + _name;
+        browsers[person].waitForExist(_nameContainer);
     });
 };

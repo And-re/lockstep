@@ -45,7 +45,7 @@ Focus = React.createClass({
                         </div>
                         <ul className="list-group">
                             {this.data.users.map((user) => {
-                                return <li key={user._id} className="list-group-item">{user.profile.name}</li>;
+                                return <li key={user._id} className="list-group-item cucumber-user">{user.profile.name}</li>;
                             })}
                         </ul>
                     </div>

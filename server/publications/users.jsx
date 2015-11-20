@@ -1,4 +1,8 @@
 //Meteor.publish('userData', function () {
+//    if (!this.userId) {
+//        return this.ready();
+//    }
+//
 //    return Meteor.users.find(
 //        {_id: this.userId},
 //        {fields: {currentTeam: 1}}
@@ -7,7 +11,7 @@
 
 Meteor.publish('teamMembers', function () {
     if (!this.userId) {
-        return [];
+        return this.ready();
     }
 
     let _user = Meteor.users.findOne({_id: this.userId});

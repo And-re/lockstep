@@ -5,9 +5,7 @@
     module.exports = function () {
 
         this.Before(function () {
-            console.log('Before hook');
-
-            this.server.call('reset');
+            //this.server.call('reset');
         });
 
     };
