@@ -22,7 +22,11 @@ Focus = React.createClass({
                     <div className="panel panel-primary">
                         <div className="panel-heading">Tasks</div>
                         <div className="panel-body">
-                            Tasks
+                            {this.data.team && this.data.team.ready ?
+                                'Team is ready'
+                                :
+                                <StartButton />
+                            }
                         </div>
                     </div>
                 </div>

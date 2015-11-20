@@ -46,5 +46,22 @@ Meteor.methods({
         Teams.update(teamId, {
             $set: {private: isPrivate}
         });
+    },
+    startTimer() {
+        let _user = Meteor.user();
+
+        Meteor.users.update({_id: _user._id}, {$set: {ready: true}});
+
+        let _team = Teams.findOne({_id: _user.currentTeam});
+
+        let _readyUsersCount = Meteor.users.find(
+            {currentTeam: _team._id, ready: true}
+        ).count();
+
+        if (_readyUsersCount === _team.userIds.length) {
+            Teams.update(_team._id, {
+                $set: {ready: true}
+            });
+        }
     }
 });

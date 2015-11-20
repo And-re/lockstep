@@ -81,10 +81,21 @@ module.exports = function () {
             } else {
                 _userId = Meteor.userId();
             }
-            console.log("_userId ", _userId);
             return Meteor.users.findOne(_userId).profile.name;
         }, direction).value;
         var _nameContainer = '.cucumber-user=' + _name;
         browsers[person].waitForExist(_nameContainer);
+    });
+
+    this.When(/^([^ ]*) clicks start$/, function(person) {
+        pending();
+    });
+
+    this.Then(/^([^ ]*) should( not)? see the timer$/, function (person, boolean) {
+        pending();
+    });
+
+    this.Then(/^([^ ]*) should have the timer decreasing from "([^"]*)" minutes$/, function (person, time) {
+        pending();
     });
 };

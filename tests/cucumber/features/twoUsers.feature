@@ -12,3 +12,19 @@ Feature: Two users at the same time
     And Alice should see the other person name in team panel
     And Bob should see his name in team panel
     And Bob should see the other person name in team panel
+
+  Scenario: Changing team privacy
+    Given Bob should see the team is not private
+    And Alice checks the private checkbox
+    Then Bob should see the team is private
+
+  Scenario: One user starts and waits
+#    When Bob adds a task
+    When Bob clicks start
+    Then Bob should not see the timer
+
+  Scenario: Both users clicked start
+    When Alice clicks start
+    Then Bob should see the timer
+    And Alice should see the timer
+    And Bob should have the timer decreasing from "25" minutes
