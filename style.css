@@ -2,3 +2,12 @@
 nav + .container {
     padding-top: 60px;
 }
+
+#timer-panel .panel-body {
+    background: #222;
+    color: #FFF;
+}
+
+#timer h1 {
+    margin: 0;
+}

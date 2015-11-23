@@ -19,13 +19,22 @@ Focus = React.createClass({
         return (
             <div className="row">
                 <div className="col-md-6">
+                    {this.data.team && this.data.team.ready ?
+                        <div id="timer-panel" className="panel panel-primary">
+                            <div className="panel-heading">Timer</div>
+                            <div className="panel-body">
+                                <Timer team={this.data.team} />
+                            </div>
+                        </div>
+                        :
+                        ''
+                    }
                     <div className="panel panel-primary">
                         <div className="panel-heading">Tasks</div>
                         <div className="panel-body">
-                            {this.data.team && this.data.team.ready ?
-                                'Team is ready'
-                                :
-                                <StartButton />
+                            {this.data.team ?
+                                <StartButton team={this.data.team} />
+                            : ''
                             }
                         </div>
                     </div>

@@ -15,7 +15,7 @@ Meteor.methods({
             let _openTeam = Teams.findOne({private: false});
 
             if (!_openTeam) {
-                _teamId = Teams.insert({userIds: [this.userId], private: false});
+                _teamId = Meteor.lockstep.createTeam(this.userId);
             } else {
                 _teamId = _openTeam._id;
             }
@@ -32,7 +32,7 @@ Meteor.methods({
         let _team = Teams.findOne({_id: teamId});
 
         if (!_team) {
-            teamId = Teams.insert({userIds: [this.userId], private: false});
+            teamId = Meteor.lockstep.createTeam(this.userId);
         }
 
         Meteor.lockstep.addUserToTeam(this.userId, teamId);
@@ -60,7 +60,7 @@ Meteor.methods({
 
         if (_readyUsersCount === _team.userIds.length) {
             Teams.update(_team._id, {
-                $set: {ready: true}
+                $set: {ready: true, startTime: new Date().getTime()}
             });
         }
     }

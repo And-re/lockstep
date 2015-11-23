@@ -88,7 +88,9 @@ module.exports = function () {
     });
 
     this.When(/^([^ ]*) clicks start$/, function(person) {
-        pending();
+        var _button = '#start-button';
+        browsers[person].waitForExist(_button);
+        browsers[person].click(_button);
     });
 
     this.Then(/^([^ ]*) should( not)? see the timer$/, function (person, boolean) {

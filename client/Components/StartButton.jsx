@@ -1,4 +1,8 @@
 StartButton = React.createClass({
+    propTypes: {
+        team: React.PropTypes.object.isRequired
+    },
+
     startTimer() {
         Meteor.call('startTimer');
     },
@@ -14,10 +18,14 @@ StartButton = React.createClass({
         });
 
         return (
-            <button className={classes}
+            <button id="start-button" className={classes}
                     onClick={this.startTimer}
             >
-                {this.isUserReady() ? 'Waiting...' : 'Start'}
+                {this.props.team.ready ?
+                    'Timer started'
+                    :
+                    this.isUserReady() ? 'Waiting...' : 'Start'
+                }
             </button>
         );
     }
