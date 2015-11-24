@@ -94,10 +94,19 @@ module.exports = function () {
     });
 
     this.Then(/^([^ ]*) should( not)? see the timer$/, function (person, boolean) {
-        pending();
+        var _panel = '#timer-panel';
+        var isVisible = !boolean;
+
+        if (isVisible) {
+            browsers[person].waitForExist(_panel);
+        } else {
+            browsers[person].pause(1000);
+        }
+        expect(browsers[person].isVisible(_panel)).toBe(isVisible);
     });
 
     this.Then(/^([^ ]*) should have the timer decreasing from "([^"]*)" minutes$/, function (person, time) {
-        pending();
+        var _timerContainer = 'samp=' + time + ':00';
+        browsers[person].waitForExist(_timerContainer);
     });
 };
