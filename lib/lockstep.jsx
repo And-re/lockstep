@@ -2,9 +2,9 @@ if (!Meteor.lockstep) {
     Meteor.lockstep = {};
 }
 
-let _shortRestTime = 5;
-let _longRestTime = 15;
-let _workTime = 25;
+let _shortRestTime = 0.1;
+let _longRestTime = 0.2;
+let _workTime = 0.3;
 
 Meteor.lockstep.timer = [_workTime, _shortRestTime, _workTime, _shortRestTime, _workTime, _longRestTime];
 
@@ -43,7 +43,9 @@ Meteor.lockstep.addUserToTeam = (userId, teamId) => {
 };
 
 Meteor.lockstep.createTeam = (userId) => {
-    return Teams.insert({userIds: [userId], private: false, timer: Meteor.lockstep.timer, phase: 0});
+    let _team = Teams.insert({userIds: [userId], private: false, timer: Meteor.lockstep.timer, phase: 0}).toString();
+
+    return _team;
 };
 
 Meteor.lockstep.getDurationString = (seconds) => {
@@ -56,4 +58,30 @@ Meteor.lockstep.getDurationString = (seconds) => {
     }
 
     return _timeLeftString;
+};
+
+Meteor.lockstep.nextTimerPhase = (teamId, _nextPhaseShouldAutostart) => {
+    let _team = Teams.findOne({_id: teamId});
+
+    let _newPhase = _team.phase + 1;
+
+    if (_nextPhaseShouldAutostart) {
+        Teams.update(_team._id, {
+            $set: {startTime: new Date().getTime(), phase: _newPhase}
+        });
+        let _currentPhaseDurationMin = _team.timer[_newPhase];
+        let _currentPhaseDurationMiliseconds = _currentPhaseDurationMin * 60 * 1000;
+        Meteor.setTimeout(function () {
+            Meteor.lockstep.nextTimerPhase(teamId, false);
+        }, _currentPhaseDurationMiliseconds);
+    } else {
+        Teams.update(_team._id, {
+            $set: {phase: _newPhase, ready: false}
+        });
+        Meteor.lockstep.makeTeamMembersNotReady(teamId);
+    }
+};
+
+Meteor.lockstep.makeTeamMembersNotReady = (teamId) => {
+    Meteor.users.update({currentTeam: teamId}, {$set: {ready: false}}, {multi: true});
 };

@@ -13,7 +13,7 @@ StartButton = React.createClass({
 
     render() {
         var classes = classNames({
-            'disabled': this.isUserReady(),
+            'disabled': this.isUserReady() || this.props.team.ready,
             'btn btn-success btn-block': true
         });
 
