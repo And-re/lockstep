@@ -22,9 +22,9 @@ StartButton = React.createClass({
                     onClick={this.startTimer}
             >
                 {this.props.team.ready ?
-                    'Timer started'
+                    `${Meteor.lockstep.getPhaseName(this.props.team.phase)} started`
                     :
-                    this.isUserReady() ? 'Waiting...' : 'Start'
+                    this.isUserReady() ? 'Waiting...' : `Start Work Phase ${Meteor.lockstep.getCurrentWorkPhase(this.props.team.phase)}`
                 }
             </button>
         );

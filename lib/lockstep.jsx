@@ -70,10 +70,10 @@ Meteor.lockstep.nextTimerPhase = (teamId, _nextPhaseShouldAutostart) => {
             $set: {startTime: new Date().getTime(), phase: _newPhase}
         });
         let _currentPhaseDurationMin = _team.timer[_newPhase];
-        let _currentPhaseDurationMiliseconds = _currentPhaseDurationMin * 60 * 1000;
+        let _currentPhaseDurationMilliseconds = _currentPhaseDurationMin * 60 * 1000;
         Meteor.setTimeout(function () {
             Meteor.lockstep.nextTimerPhase(teamId, false);
-        }, _currentPhaseDurationMiliseconds);
+        }, _currentPhaseDurationMilliseconds);
     } else {
         Teams.update(_team._id, {
             $set: {phase: _newPhase, ready: false}
@@ -85,3 +85,24 @@ Meteor.lockstep.nextTimerPhase = (teamId, _nextPhaseShouldAutostart) => {
 Meteor.lockstep.makeTeamMembersNotReady = (teamId) => {
     Meteor.users.update({currentTeam: teamId}, {$set: {ready: false}}, {multi: true});
 };
+
+Meteor.lockstep.isWorkPhase = (phase) => {
+    return (phase % 2) === 0;
+};
+
+Meteor.lockstep.getPhaseName = (phase) => {
+    return Meteor.lockstep.isWorkPhase(phase) ? 'Work' : 'Break';
+};
+
+Meteor.lockstep.getCurrentWorkPhase = (phase) => {
+    return ((phase / 2) % 3) + 1;
+};
+
+Meteor.lockstep.setTitle = (team, secondsLeft) => {
+    if (team && team.ready) {
+        document.title = `${Meteor.lockstep.isWorkPhase(team.phase) ? '' : '*'}${Meteor.lockstep.getDurationString(secondsLeft)} - Lockstep`;
+    } else {
+        document.title = 'Lockstep';
+    }
+};
+

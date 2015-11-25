@@ -15,6 +15,8 @@ Timer = React.createClass({
 
     componentWillUnmount() {
         clearInterval(this.timer);
+        Meteor.lockstep.setTitle();
+
     },
 
     tick() {
@@ -23,6 +25,8 @@ Timer = React.createClass({
         let _secondsLeft = _currentPhaseDuration - _secondsPassed;
 
         this.setState({secondsLeft: _secondsLeft});
+
+        Meteor.lockstep.setTitle(this.props.team, _secondsLeft);
     },
 
     render() {

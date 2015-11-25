@@ -74,12 +74,12 @@ Meteor.methods({
             }
 
             let _currentPhaseDurationMin = _team.timer[_currentPhase];
-            let _currentPhaseDurationMiliseconds = _currentPhaseDurationMin * 60 * 1000;
-            let _nextPhaseShouldAutostart = _currentPhase % 2 == 0; //true for even numbers, false for odd
+            let _currentPhaseDurationMilliseconds = _currentPhaseDurationMin * 60 * 1000;
+            let _nextPhaseShouldAutostart = Meteor.lockstep.isWorkPhase(_currentPhase);
 
             Meteor.setTimeout(function () {
                 Meteor.lockstep.nextTimerPhase(_user.currentTeam, _nextPhaseShouldAutostart);
-            }, _currentPhaseDurationMiliseconds);
+            }, _currentPhaseDurationMilliseconds);
 
         }
     }

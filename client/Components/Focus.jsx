@@ -16,13 +16,18 @@ Focus = React.createClass({
     },
 
     render() {
+        var timerClasses = classNames({
+            'timer-break': this.data.team && !Meteor.lockstep.isWorkPhase(this.data.team.phase),
+            'panel-body': true
+        });
+
         return (
             <div className="row">
                 <div className="col-md-6">
                     {this.data.team && this.data.team.ready ?
                         <div id="timer-panel" className="panel panel-primary">
-                            <div className="panel-heading">Timer</div>
-                            <div className="panel-body">
+                            <div className="panel-heading">Timer ({Meteor.lockstep.getPhaseName(this.data.team.phase)})</div>
+                            <div className={timerClasses}>
                                 <Timer team={this.data.team} />
                             </div>
                         </div>
