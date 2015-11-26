@@ -27,4 +27,15 @@ Feature: Two users at the same time
     When Alice clicks start
     Then Bob should see the timer
     And Alice should see the timer
-    And Bob should have the timer decreasing from "25" minutes
+    And Bob should have the timer decreasing using "workTime"
+    And Bob should have the timer decreasing using "shortRestTime"
+    And Alice waits for the "Start Work Phase 2" button
+    And Alice clicks start
+    And Bob clicks start
+    And Bob should have the timer decreasing using "workTime"
+    And Bob should have the timer decreasing using "shortRestTime"
+    And Alice waits for the "Start Work Phase 3" button
+    And Alice clicks start
+    And Bob clicks start
+    And Bob should have the timer decreasing using "workTime"
+    And Bob should have the timer decreasing using "longRestTime"

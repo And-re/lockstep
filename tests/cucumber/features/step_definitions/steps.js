@@ -3,6 +3,7 @@ var url = require('url');
 module.exports = function () {
 
     var browsers = {};
+    var timers = {};
 
     function getBrowserFor(person) {
         return (person === 'Both') ? browser : browsers[person];
@@ -16,6 +17,10 @@ module.exports = function () {
         browsers.Bob = browser.browsers[1];
 
         this.server.call('reset');
+        timers.shortRestTime = 0.05;
+        timers.longRestTime = 0.1;
+        timers.workTime = 0.15;
+        this.server.call("changeTimer", timers);
     });
 
     this.When(/^([^ ]*) go(?:es)? to "([^"]*)"$/, function (person, relativePath) {
@@ -105,8 +110,18 @@ module.exports = function () {
         expect(browsers[person].isVisible(_panel)).toBe(isVisible);
     });
 
-    this.Then(/^([^ ]*) should have the timer decreasing from "([^"]*)" minutes$/, function (person, time) {
-        var _timerContainer = 'samp=' + time + ':00';
+    this.Then(/^([^ ]*) should have the timer decreasing using "([^"]*)"$/, function (person, phase) {
+        var _durationString = browsers[person].execute(function(seconds) {
+            return Meteor.lockstep.getDurationString(seconds);
+        }, timers[phase] * 60).value;
+
+        var _timerContainer = 'samp=' + _durationString;
+
         browsers[person].waitForExist(_timerContainer);
+    });
+
+    this.Then(/^([^ ]*) waits for the "([^"]*)" button$/, function (person, buttonText) {
+        var _button = '#start-button';
+        browsers[person].waitForExist(_button + '=' + buttonText);
     });
 };
