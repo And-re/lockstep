@@ -46,9 +46,7 @@ Meteor.lockstep.addUserToTeam = (userId, teamId) => {
 };
 
 Meteor.lockstep.createTeam = (userId) => {
-    let _team = Teams.insert({userIds: [userId], private: false, timer: Meteor.lockstep.timer, phase: 0}).toString();
-
-    return _team;
+    return Teams.insert({userIds: [userId], private: false, timer: Meteor.lockstep.timer, phase: 0});
 };
 
 Meteor.lockstep.getDurationString = (seconds) => {

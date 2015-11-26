@@ -4,10 +4,14 @@ Focus = React.createClass({
     getMeteorData() {
         Meteor.subscribe('teamMembers');
         Meteor.subscribe('myTeam');
+        Meteor.subscribe('myTeamTasks');
 
         return {
             users: Meteor.users.find({}, {sort: {createdAt: 1}}).fetch(),
-            team: Teams.findOne({_id: Meteor.user().currentTeam})
+            team: Teams.findOne({_id: Meteor.user().currentTeam}),
+            todoTasks: Tasks.find({type: 'todo'}, {sort: {createdAt: 1}}).fetch(),
+            plannedTasks: Tasks.find({type: 'planned'}, {sort: {createdAt: 1}}).fetch(),
+            completedTasks: Tasks.find({type: 'completed'}, {sort: {createdAt: 1}}).fetch()
         };
     },
 
@@ -38,7 +42,24 @@ Focus = React.createClass({
                         <div className="panel-heading">Tasks</div>
                         <div className="panel-body">
                             {this.data.team ?
-                                <StartButton team={this.data.team} />
+                                <div>
+                                    <AddTask team={this.data.team} />
+
+                                    <br />
+
+                                    <StartButton team={this.data.team} />
+
+                                    <hr />
+
+                                    <h4>Todo ({this.data.todoTasks.length})</h4>
+                                    <TaskList tasks={this.data.todoTasks} users={this.data.users} />
+
+                                    <h4>Planned ({this.data.plannedTasks.length})</h4>
+                                    <TaskList tasks={this.data.plannedTasks} users={this.data.users} />
+
+                                    <h4>Completed ({this.data.completedTasks.length})</h4>
+                                    <TaskList tasks={this.data.completedTasks} users={this.data.users} />
+                                </div>
                             : ''
                             }
                         </div>

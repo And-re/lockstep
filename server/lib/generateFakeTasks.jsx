@@ -6,7 +6,7 @@ Meteor.startup(() => {
         _.each(_.range(25), () => {
             let name = `${h.adjective()} ${h.noun()} ${h.ingverb()}`;
             let createdAt = f.date.past();
-            let type = f.helpers.randomize(['todo', 'planned', 'done']);
+            let type = f.helpers.randomize(['todo', 'planned', 'completed']);
 
             Tasks.insert({
                 name,

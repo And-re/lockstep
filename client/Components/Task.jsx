@@ -5,7 +5,19 @@ Task = React.createClass({
 
     render() {
         return (
-            <li className="list-group-item"><span className="pull-right small text-muted">{Meteor.lockstep.formatDate(this.props.task.createdAt)}</span>{this.props.task.name}</li>
+            <li className="list-group-item clearfix">
+                <div className="pull-right small text-muted text-right">
+                    {this.props.task.user ?
+                        <div className="text-primary">
+                            {this.props.task.user}
+                        </div>
+                        :
+                        ''
+                    }
+                    {Meteor.lockstep.formatDate(this.props.task.createdAt)}
+                </div>
+                {this.props.task.name}
+            </li>
         );
     }
 });
