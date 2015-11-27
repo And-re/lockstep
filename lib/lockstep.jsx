@@ -2,12 +2,12 @@ if (!Meteor.lockstep) {
     Meteor.lockstep = {};
 }
 
-//let _shortRestTime = 5;
-//let _longRestTime = 15;
-//let _workTime = 25;
-let _shortRestTime = 0.05;
-let _longRestTime = 0.1;
-let _workTime = 0.15;
+let _shortRestTime = 5;
+let _longRestTime = 15;
+let _workTime = 25;
+//let _shortRestTime = 0.05;
+//let _longRestTime = 0.1;
+//let _workTime = 0.15;
 
 Meteor.lockstep.timer = [_workTime, _shortRestTime, _workTime, _shortRestTime, _workTime, _longRestTime];
 
