@@ -100,6 +100,11 @@ Focus = React.createClass({
                             {this.data.users.map((user) => {
                                 return (
                                     <li key={user._id} className="list-group-item cucumber-user clearfix">
+                                        {user.ready ?
+                                            <span><span className="glyphicon glyphicon-ok" title="Ready"></span>&nbsp;</span>
+                                            :
+                                            ''
+                                        }
                                         {user.profile.name}
                                         <button type="button"
                                                 className="btn btn-xs btn-default pull-right"
