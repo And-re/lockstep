@@ -19,6 +19,10 @@ Focus = React.createClass({
         Meteor.call('setPrivateTeam', this.data.team._id, !this.data.team.private);
     },
 
+    removeUser(userId) {
+        Meteor.call('removeUser', userId);
+    },
+
     render() {
         var timerClasses = classNames({
             'timer-break': this.data.team && !Meteor.lockstep.isWorkPhase(this.data.team.phase),
@@ -94,7 +98,18 @@ Focus = React.createClass({
                         </div>
                         <ul className="list-group">
                             {this.data.users.map((user) => {
-                                return <li key={user._id} className="list-group-item cucumber-user">{user.profile.name}</li>;
+                                return (
+                                    <li key={user._id} className="list-group-item cucumber-user clearfix">
+                                        {user.profile.name}
+                                        <button type="button"
+                                                className="btn btn-xs btn-default pull-right"
+                                                onClick={this.removeUser.bind(this, user._id)}
+                                                title="Remove User"
+                                        >
+                                            <span className="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                    </li>
+                                );
                             })}
                         </ul>
                     </div>

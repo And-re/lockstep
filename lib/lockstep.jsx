@@ -64,6 +64,10 @@ Meteor.lockstep.getDurationString = (seconds) => {
 Meteor.lockstep.nextTimerPhase = (teamId, _nextPhaseShouldAutostart) => {
     let _team = Teams.findOne({_id: teamId});
 
+    if (!_team) {
+        return;
+    }
+
     let _newPhase = _team.phase + 1;
 
     if (_nextPhaseShouldAutostart) {
