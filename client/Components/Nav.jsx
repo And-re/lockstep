@@ -1,7 +1,15 @@
 Nav = React.createClass({
+    mixins: [ReactMeteorData],
+
+    getMeteorData() {
+        return {
+            user: Meteor.user()
+        };
+    },
+
     getNavItems() {
         return _.filter(Routes, (route) => {
-            if (!route.auth || Meteor.user()) {
+            if (!route.auth || this.data.user) {
                 return route;
             }
         });
@@ -15,11 +23,10 @@ Nav = React.createClass({
     },
 
     renderCurrentUser() {
-        var _user = Meteor.user();
-        if (_user) {
+        if (this.data.user) {
             return (
                 <div className="navbar-right">
-                    <p className="navbar-text text-right">{_user.profile.name}</p>
+                    <EditName name={this.data.user.profile.name} />
                 </div>
             );
         }
@@ -30,7 +37,13 @@ Nav = React.createClass({
             <nav className="navbar navbar-inverse navbar-fixed-top">
                 <div className="container">
                     <div className="navbar-header">
-                        <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <button type="button"
+                                className="navbar-toggle collapsed"
+                                data-toggle="collapse"
+                                data-target="#navbar"
+                                aria-expanded="false"
+                                aria-controls="navbar"
+                        >
                             <span className="sr-only">Toggle navigation</span>
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>

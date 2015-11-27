@@ -10,7 +10,9 @@ AddTask = React.createClass({
         }
     },
 
-    addTask() {
+    addTask(e) {
+        e.preventDefault();
+
         Meteor.call('addTask', this.state.task, this.props.type);
         this.setState(this.getInitialState());
     },
@@ -29,10 +31,10 @@ AddTask = React.createClass({
         let placeholder = `Add ${this.props.type} task description`;
 
         return (
-            <div id="add-task" className="row">
+            <form id="add-task" onSubmit={this.addTask} className="row">
                 <div className="col-sm-8">
-                    <input className="form-control"
-                           type="text"
+                    <input type="text"
+                           className="form-control"
                            ref="task"
                            placeholder={placeholder}
                            value={this.state.task}
@@ -40,9 +42,9 @@ AddTask = React.createClass({
                     />
                 </div>
                 <div className="col-sm-4">
-                    <button className={classes} onClick={this.addTask}>Add Task</button>
+                    <button type="submit" className={classes}>Add Task</button>
                 </div>
-            </div>
+            </form>
         );
     }
 });
