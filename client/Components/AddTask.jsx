@@ -1,6 +1,7 @@
 AddTask = React.createClass({
     propTypes: {
-        team: React.PropTypes.object.isRequired
+        team: React.PropTypes.object.isRequired,
+        type: React.PropTypes.string.isRequired
     },
 
     getInitialState() {
@@ -10,7 +11,7 @@ AddTask = React.createClass({
     },
 
     addTask() {
-        Meteor.call('addTask', this.state.task);
+        Meteor.call('addTask', this.state.task, this.props.type);
         this.setState(this.getInitialState());
     },
 
@@ -25,13 +26,15 @@ AddTask = React.createClass({
             'btn btn-primary btn-block': true
         });
 
+        let placeholder = `Add ${this.props.type} task description`;
+
         return (
             <div id="add-task" className="row">
                 <div className="col-sm-8">
                     <input className="form-control"
                            type="text"
                            ref="task"
-                           placeholder="Task description"
+                           placeholder={placeholder}
                            value={this.state.task}
                            onChange={this.updateTask}
                     />

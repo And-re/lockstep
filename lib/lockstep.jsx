@@ -70,8 +70,14 @@ Meteor.lockstep.nextTimerPhase = (teamId, _nextPhaseShouldAutostart) => {
         Teams.update(_team._id, {
             $set: {startTime: new Date().getTime(), phase: _newPhase}
         });
+
+        Tasks.update({teamId: _team._id, type: 'todo'}, {
+            $set: {type: 'planned'}
+        }, {multi: true});
+
         let _currentPhaseDurationMin = _team.timer[_newPhase];
         let _currentPhaseDurationMilliseconds = _currentPhaseDurationMin * 60 * 1000;
+
         Meteor.setTimeout(function () {
             Meteor.lockstep.nextTimerPhase(teamId, false);
         }, _currentPhaseDurationMilliseconds);
@@ -105,5 +111,13 @@ Meteor.lockstep.setTitle = (team, secondsLeft) => {
     } else {
         document.title = 'Lockstep';
     }
+};
+
+Meteor.lockstep.getTaskTypes = () => {
+    return ['todo', 'planned', 'completed'];
+};
+
+Meteor.lockstep.isValidTaskType = (type) => {
+    return _.contains(Meteor.lockstep.getTaskTypes(), type);
 };
 

@@ -11,7 +11,7 @@ TaskList = React.createClass({
             this.props.users.forEach((user) => {
                 usersById[user._id] = user.profile.name;
             });
-            
+
             this.props.tasks.map((task) => {
                 task.user = usersById[task.userId];
                 return task;

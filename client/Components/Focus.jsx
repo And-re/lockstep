@@ -43,7 +43,17 @@ Focus = React.createClass({
                         <div className="panel-body">
                             {this.data.team ?
                                 <div>
-                                    <AddTask team={this.data.team} />
+                                    <AddTask type="todo" team={this.data.team} />
+
+                                    {this.data.team.phase > 0 ?
+                                        <div>
+                                            <hr />
+
+                                            <AddTask type="completed" team={this.data.team}/>
+                                        </div>
+                                        :
+                                        ''
+                                    }
 
                                     <br />
 
