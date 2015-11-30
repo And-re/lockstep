@@ -128,6 +128,10 @@ Meteor.lockstep.isValidTaskType = (type) => {
 Meteor.lockstep.startTimer = (teamId) => {
     let _team = Teams.findOne({_id: teamId, ready: {$ne: true}});
 
+    if (!_team) {
+        return;
+    }
+
     let _readyUsersCount = Meteor.users.find(
         {currentTeam: _team._id, ready: true}
     ).count();
