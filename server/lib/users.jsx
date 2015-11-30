@@ -21,5 +21,7 @@ Meteor.methods({
         Meteor.users.update({_id: userId, currentTeam: _user.currentTeam}, {
             $set: {currentTeam: null}
         });
+
+        Meteor.call('startTimer');
     }
 });
