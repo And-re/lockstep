@@ -12,6 +12,11 @@ EditName = React.createClass({
 
     toggleEditMode() {
         this.setState({isInEditMode: !this.state.isInEditMode});
+
+        if (!this.state.isInEditMode) {
+            let _nameInput = ReactDOM.findDOMNode(this.refs.name);
+            _nameInput.setSelectionRange(0, _nameInput.value.length);
+        }
     },
 
     updateName() {
@@ -23,10 +28,11 @@ EditName = React.createClass({
         e.preventDefault();
 
         let name = this.refs.name.value;
-        console.log('edit name', name);
+
+        name = name.trim();
 
         if (!name) {
-            console.log('name return');
+            alert('The name cannot be empty or with spaces only.');
             return;
         }
 
@@ -40,9 +46,20 @@ EditName = React.createClass({
     },
 
     render() {
-        if (this.state.isInEditMode) {
-            return (
-                <form className="navbar-form" onSubmit={this.edit}>
+        let editNameClasses = classNames({
+            'navbar-text text-right': true,
+            'hidden': this.state.isInEditMode,
+        });
+
+        let editFormClasses = classNames({
+            'navbar-form': true,
+            'hidden': !this.state.isInEditMode,
+        });
+
+        return (
+            <div>
+                <p className={editNameClasses} onClick={this.toggleEditMode}>{this.props.name}</p>
+                <form className={editFormClasses} onSubmit={this.edit}>
                     <input type="text"
                            className="form-control"
                            ref="name"
@@ -67,12 +84,7 @@ EditName = React.createClass({
                         </button>
                     </div>
                 </form>
-            );
-        } else {
-            return (
-                <p className="navbar-text text-right" onClick={this.toggleEditMode}>{this.props.name}</p>
-            );
-        }
-
+            </div>
+        );
     }
 });
