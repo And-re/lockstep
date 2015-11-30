@@ -125,3 +125,34 @@ Meteor.lockstep.isValidTaskType = (type) => {
     return _.contains(Meteor.lockstep.getTaskTypes(), type);
 };
 
+Meteor.lockstep.startTimer = (teamId) => {
+    let _team = Teams.findOne({_id: teamId, ready: {$ne: true}});
+
+    let _readyUsersCount = Meteor.users.find(
+        {currentTeam: _team._id, ready: true}
+    ).count();
+
+    if (_readyUsersCount === _team.userIds.length) {
+        Teams.update(_team._id, {
+            $set: {ready: true, startTime: new Date().getTime()}
+        });
+
+        let _currentPhase = _team.phase;
+        let _totalNoOfPhases = _team.timer.length;
+
+        if (_currentPhase >= _totalNoOfPhases) {
+            _currentPhase = 0;
+            Teams.update(_team._id, {
+                $set: {phase: _currentPhase}
+            });
+        }
+
+        let _currentPhaseDurationMin = _team.timer[_currentPhase];
+        let _currentPhaseDurationMilliseconds = _currentPhaseDurationMin * 60 * 1000;
+        let _nextPhaseShouldAutostart = Meteor.lockstep.isWorkPhase(_currentPhase);
+
+        Meteor.setTimeout(function () {
+            Meteor.lockstep.nextTimerPhase(teamId, _nextPhaseShouldAutostart);
+        }, _currentPhaseDurationMilliseconds);
+    }
+};

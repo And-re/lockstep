@@ -32,7 +32,7 @@ Meteor.methods({
         let _team = Teams.findOne({_id: teamId});
 
         if (!_team) {
-            teamId = Meteor.lockstep.createTeam(this.userId);
+            teamId = Teams.insert({_id: teamId, userIds: [this.userId], private: false, timer: Meteor.lockstep.timer, phase: 0}).toString();
         }
 
         Meteor.lockstep.addUserToTeam(this.userId, teamId);
@@ -51,36 +51,5 @@ Meteor.methods({
         let _user = Meteor.user();
 
         Meteor.users.update({_id: _user._id}, {$set: {ready: true}});
-
-        let _team = Teams.findOne({_id: _user.currentTeam});
-
-        let _readyUsersCount = Meteor.users.find(
-            {currentTeam: _team._id, ready: true}
-        ).count();
-
-        if (_readyUsersCount === _team.userIds.length) {
-            Teams.update(_team._id, {
-                $set: {ready: true, startTime: new Date().getTime()}
-            });
-
-            let _currentPhase = _team.phase;
-            let _totalNoOfPhases = _team.timer.length;
-
-            if (_currentPhase >= _totalNoOfPhases) {
-                _currentPhase = 0;
-                Teams.update(_team._id, {
-                    $set: {phase: _currentPhase}
-                });
-            }
-
-            let _currentPhaseDurationMin = _team.timer[_currentPhase];
-            let _currentPhaseDurationMilliseconds = _currentPhaseDurationMin * 60 * 1000;
-            let _nextPhaseShouldAutostart = Meteor.lockstep.isWorkPhase(_currentPhase);
-
-            Meteor.setTimeout(function () {
-                Meteor.lockstep.nextTimerPhase(_user.currentTeam, _nextPhaseShouldAutostart);
-            }, _currentPhaseDurationMilliseconds);
-
-        }
     }
 });

@@ -5,6 +5,7 @@ Focus = React.createClass({
         Meteor.subscribe('teamMembers');
         Meteor.subscribe('myTeam');
         Meteor.subscribe('myTeamTasks');
+        Meteor.subscribe('myTeamIsReady');
 
         return {
             users: Meteor.users.find({}, {sort: {createdAt: 1}}).fetch(),

@@ -19,9 +19,7 @@ Meteor.methods({
         Teams.remove({_id: _user.currentTeam, userIds: {$size: 0}});
 
         Meteor.users.update({_id: userId, currentTeam: _user.currentTeam}, {
-            $set: {currentTeam: null}
+            $set: {currentTeam: null, ready: false}
         });
-
-        Meteor.call('startTimer');
     }
 });
