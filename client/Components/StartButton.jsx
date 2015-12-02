@@ -3,6 +3,24 @@ StartButton = React.createClass({
         team: React.PropTypes.object.isRequired
     },
 
+    componentWillUpdate(nextProps) {
+        if (nextProps.team.phase !== this.props.team.phase) {
+            if (notify.permissionLevel() == notify.PERMISSION_GRANTED) {
+                if (nextProps.team.ready) {
+                    notify.createNotification('Break!', {
+                        body: 'Time for a break!',
+                        icon: '/break.png'
+                    });
+                } else {
+                    notify.createNotification('End of Break!', {
+                        body: 'Time to work!',
+                        icon: '/work.png'
+                    });
+                }
+            }
+        }
+    },
+
     startTimer() {
         Meteor.call('startTimer');
     },

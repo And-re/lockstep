@@ -1,6 +1,14 @@
 Focus = React.createClass({
     mixins: [ReactMeteorData],
 
+    componentDidMount() {
+        notify.config({pageVisibility: false, autoClose: 5000});
+
+        if (notify.permissionLevel() == notify.PERMISSION_DEFAULT) {
+            notify.requestPermission();
+        }
+    },
+
     getMeteorData() {
         Meteor.subscribe('teamMembers');
         Meteor.subscribe('myTeam');
