@@ -3,7 +3,7 @@ Meteor.publish('tasks', function () {
         return [];
     }
 
-    return Tasks.find({userId: this.userId});
+    return Tasks.find({userIds: this.userId});
 });
 
 Meteor.publish('myTeamTasks', function () {

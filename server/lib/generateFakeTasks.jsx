@@ -1,5 +1,5 @@
 Meteor.startup(() => {
-    if (Tasks.find().count() < 25) {
+    if (Tasks.find().count() < 0) {
         let f = faker;
         let h = f.hacker;
 

@@ -13,8 +13,21 @@ Meteor.methods({
             name: task,
             createdAt: new Date(),
             type: type,
-            userId: this.userId,
-            teamId: _user.currentTeam
+            teamId: _user.currentTeam,
+            userIds: [this.userId]
+        });
+    },
+    cloneTask(taskId) {
+        check(taskId, String);
+
+        let _task = Tasks.findOne({_id: taskId});
+
+        if (!_task || !this.userId || _.contains(_task.userIds, this.userId)) {
+            return false;
+        }
+
+        return Tasks.update(taskId, {
+            $addToSet: {userIds: this.userId}
         });
     },
     moveTask(taskId, type) {

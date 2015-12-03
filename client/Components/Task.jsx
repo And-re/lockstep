@@ -37,6 +37,13 @@ Task = React.createClass({
                         >
                             <span className="glyphicon glyphicon-remove"></span>
                         </button>
+                        <button type="button"
+                                className="btn btn-xs btn-default"
+                                onClick={this.cloneTask}
+                                title="Clone"
+                        >
+                            <span className="glyphicon glyphicon-duplicate"></span>
+                        </button>
                         {this.getActionButton('Planned')}
                     </div>
                     :
@@ -74,6 +81,10 @@ Task = React.createClass({
         Meteor.call('moveTask', this.props.task._id, 'completed');
     },
 
+    cloneTask() {
+        Meteor.call('cloneTask', this.props.task._id);
+    },
+
     removeTask() {
         Meteor.call('removeTask', this.props.task._id);
     },
@@ -81,20 +92,18 @@ Task = React.createClass({
     render() {
         return (
             <li className="task-item list-group-item clearfix">
-                {this.props.task.user ?
+                {this.props.task.users ?
                     this.getActionButtons()
                     :
                     ''
                 }
 
                 <div className="pull-right small text-muted text-right">
-                    {this.props.task.user ?
-                        <div className="task-user text-primary">
-                            {this.props.task.user}
+                    {this.props.task.users && this.props.task.users.map((user) => {
+                        return <div className="task-user text-primary">
+                            {user}
                         </div>
-                        :
-                        ''
-                    }
+                    })}
                     {Meteor.lockstep.formatDate(this.props.task.createdAt)}
                 </div>
                 {this.props.task.name}

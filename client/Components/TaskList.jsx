@@ -13,7 +13,10 @@ TaskList = React.createClass({
             });
 
             this.props.tasks.map((task) => {
-                task.user = usersById[task.userId];
+                task.users = [];
+                task.userIds && task.userIds.forEach((userId) => {
+                    task.users.push(usersById[userId]);
+                });
                 return task;
             });
         }
