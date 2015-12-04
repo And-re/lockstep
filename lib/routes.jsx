@@ -56,6 +56,22 @@ _.each(Routes, (route) => {
     });
 });
 
+
+/**
+ * Google Account
+ */
+FlowRouter.route('/login/google', {
+    name: 'login-google',
+    action() {
+        Meteor.loginWithGoogle({}, function (err) {
+            if (err) {
+                Session.set('errorMessage', err.reason || 'Unknown error');
+            }
+            FlowRouter.go('focus');
+        });
+    }
+});
+
 FlowRouter.notFound = {
     action() {
         FlowRouter.go('home');
