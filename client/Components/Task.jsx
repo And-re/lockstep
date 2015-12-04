@@ -1,6 +1,7 @@
 Task = React.createClass({
     propTypes: {
-        task: React.PropTypes.object.isRequired
+        task: React.PropTypes.object.isRequired,
+        showActions: React.PropTypes.bool
     },
 
     actions: {
@@ -92,7 +93,7 @@ Task = React.createClass({
     render() {
         return (
             <li className="task-item list-group-item clearfix">
-                {this.props.task.users ?
+                {this.props.showActions ?
                     this.getActionButtons()
                     :
                     ''
@@ -100,9 +101,11 @@ Task = React.createClass({
 
                 <div className="pull-right small text-muted text-right">
                     {this.props.task.users && this.props.task.users.map((user) => {
-                        return <div className="task-user text-primary">
-                            {user}
-                        </div>
+                        return (
+                            <div key={user} className="task-user text-primary">
+                                {user}
+                            </div>
+                        );
                     })}
                     {Meteor.lockstep.formatDate(this.props.task.createdAt)}
                 </div>

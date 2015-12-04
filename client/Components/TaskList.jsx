@@ -1,7 +1,8 @@
 TaskList = React.createClass({
     propTypes: {
         tasks: React.PropTypes.array.isRequired,
-        users: React.PropTypes.array
+        users: React.PropTypes.array,
+        showActions: React.PropTypes.bool
     },
 
     render() {
@@ -24,7 +25,7 @@ TaskList = React.createClass({
         return (
             <ul className="list-group">
                 {this.props.tasks.map((task) => {
-                    return <Task key={task._id} task={task} />;
+                    return <Task key={task._id} task={task} showActions={this.props.showActions} />;
                 })}
             </ul>
         );

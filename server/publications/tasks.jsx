@@ -1,4 +1,8 @@
 Meteor.publish('tasks', function () {
+    return Tasks.find({});
+});
+
+Meteor.publish('myTasks', function () {
     if (!this.userId) {
         return [];
     }

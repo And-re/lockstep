@@ -9,6 +9,10 @@ let _workTime = 25;
 //let _longRestTime = 0.1;
 //let _workTime = 0.15;
 
+if (Meteor.isClient) {
+    Meteor.subscribe('userData');
+}
+
 Meteor.lockstep.timer = [_workTime, _shortRestTime, _workTime, _shortRestTime, _workTime, _longRestTime];
 
 Meteor.lockstep.formatDate = (date) => {

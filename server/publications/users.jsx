@@ -1,13 +1,13 @@
-//Meteor.publish('userData', function () {
-//    if (!this.userId) {
-//        return this.ready();
-//    }
-//
-//    return Meteor.users.find(
-//        {_id: this.userId},
-//        {fields: {currentTeam: 1, ready: 1}}
-//    );
-//});
+Meteor.publish('userData', function () {
+    if (!this.userId) {
+        return this.ready();
+    }
+
+    return Meteor.users.find(
+        {_id: this.userId},
+        {fields: {currentTeam: 1, ready: 1, isAdmin: 1}}
+    );
+});
 
 Meteor.publish('teamMembers', function () {
     if (!this.userId) {

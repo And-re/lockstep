@@ -75,13 +75,13 @@ Focus = React.createClass({
                                     <hr />
 
                                     <h4>Todo ({this.data.todoTasks.length})</h4>
-                                    <TaskList tasks={this.data.todoTasks} users={this.data.users} />
+                                    <TaskList tasks={this.data.todoTasks} users={this.data.users} showActions={true} />
 
                                     <h4>Planned ({this.data.plannedTasks.length})</h4>
-                                    <TaskList tasks={this.data.plannedTasks} users={this.data.users} />
+                                    <TaskList tasks={this.data.plannedTasks} users={this.data.users} showActions={true} />
 
                                     <h4>Completed ({this.data.completedTasks.length})</h4>
-                                    <TaskList tasks={this.data.completedTasks} users={this.data.users} />
+                                    <TaskList tasks={this.data.completedTasks} users={this.data.users} showActions={true} />
                                 </div>
                             : ''
                             }
