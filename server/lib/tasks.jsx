@@ -17,6 +17,20 @@ Meteor.methods({
             userIds: [this.userId]
         });
     },
+    editTask(taskId, name) {
+        check(taskId, String);
+        check(name, String);
+
+        name = name.trim();
+
+        if (!name) {
+            return;
+        }
+
+        return Tasks.update(taskId, {
+            $set: {'name': name}
+        });
+    },
     cloneTask(taskId) {
         check(taskId, String);
 

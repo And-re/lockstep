@@ -109,7 +109,7 @@ Task = React.createClass({
                     })}
                     {Meteor.lockstep.formatDate(this.props.task.createdAt)}
                 </div>
-                {this.props.task.name}
+                <EditTask task={this.props.task} />
             </li>
         );
     }
