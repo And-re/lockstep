@@ -1,6 +1,7 @@
 StartButton = React.createClass({
     propTypes: {
-        team: React.PropTypes.object.isRequired
+        team: React.PropTypes.object.isRequired,
+        isDisabled: React.PropTypes.bool
     },
 
     componentWillUpdate(nextProps) {
@@ -22,6 +23,9 @@ StartButton = React.createClass({
     },
 
     startTimer() {
+        if (this.isDisabled()) {
+            return false;
+        }
         Meteor.call('startTimer');
     },
 
@@ -29,9 +33,13 @@ StartButton = React.createClass({
         return Meteor.user().ready;
     },
 
+    isDisabled() {
+        return !!this.props.isDisabled || this.isUserReady() || this.props.team.ready;
+    },
+
     render() {
         var classes = classNames({
-            'disabled': this.isUserReady() || this.props.team.ready,
+            'disabled': this.isDisabled(),
             'btn btn-success btn-block': true
         });
 
@@ -42,7 +50,12 @@ StartButton = React.createClass({
                 {this.props.team.ready ?
                     `${Meteor.lockstep.getPhaseName(this.props.team.phase)} started`
                     :
-                    this.isUserReady() ? 'Waiting...' : `Start Work Phase ${Meteor.lockstep.getCurrentWorkPhase(this.props.team.phase)}`
+                    this.isUserReady() ? 'Waiting...'
+                        :
+                        this.props.isDisabled ?
+                        'Add some Task first'
+                        :
+                        `Start Work Phase ${Meteor.lockstep.getCurrentWorkPhase(this.props.team.phase)}`
                 }
             </button>
         );

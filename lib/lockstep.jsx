@@ -129,6 +129,25 @@ Meteor.lockstep.isValidTaskType = (type) => {
     return _.contains(Meteor.lockstep.getTaskTypes(), type);
 };
 
+Meteor.lockstep.isStartButtonDisabled = () => {
+    let _user = Meteor.user();
+
+    let _team = Teams.findOne({_id: _user.currentTeam});
+
+    if (!_team) {
+        return true;
+    }
+
+    let _todoTasksCount = Tasks.find({userIds: _user._id, teamId: _team._id, type: 'todo', startTime: {$exists: false}}).count();
+    let _completedTasksCount;
+
+    if (_team.phase > 0) {
+        _completedTasksCount = Tasks.find({userIds: _user._id, teamId: _team._id, type: 'completed', startTime: {$exists: false}}).count();
+    }
+
+    return _todoTasksCount === 0 || (!_.isUndefined(_completedTasksCount) && _completedTasksCount === 0);
+};
+
 Meteor.lockstep.startTimer = (teamId) => {
     let _team = Teams.findOne({_id: teamId, ready: {$ne: true}});
 
@@ -141,8 +160,10 @@ Meteor.lockstep.startTimer = (teamId) => {
     ).count();
 
     if (_readyUsersCount === _team.userIds.length) {
+        let startTime = new Date().getTime();
+
         Teams.update(_team._id, {
-            $set: {ready: true, startTime: new Date().getTime()}
+            $set: {ready: true, startTime: startTime}
         });
 
         let _currentPhase = _team.phase;
@@ -154,6 +175,10 @@ Meteor.lockstep.startTimer = (teamId) => {
                 $set: {phase: _currentPhase}
             });
         }
+
+        Tasks.update({teamId: _team._id, startTime: {$exists: false}}, {
+            $set: {phase: _currentPhase, startTime: startTime}
+        }, {multi: true});
 
         let _currentPhaseDurationMin = _team.timer[_currentPhase];
         let _currentPhaseDurationMilliseconds = _currentPhaseDurationMin * 60 * 1000;

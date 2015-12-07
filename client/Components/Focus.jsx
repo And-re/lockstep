@@ -62,7 +62,7 @@ Focus = React.createClass({
                                         <div>
                                             <hr />
 
-                                            <AddTask type="completed" team={this.data.team}/>
+                                            <AddTask type="completed" team={this.data.team} />
                                         </div>
                                         :
                                         ''
@@ -70,7 +70,7 @@ Focus = React.createClass({
 
                                     <br />
 
-                                    <StartButton team={this.data.team} />
+                                    <StartButton team={this.data.team} isDisabled={Meteor.lockstep.isStartButtonDisabled()} />
 
                                     <hr />
 

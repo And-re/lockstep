@@ -56,7 +56,6 @@ _.each(Routes, (route) => {
     });
 });
 
-
 /**
  * Google Account
  */
