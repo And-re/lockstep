@@ -13,7 +13,14 @@ AddTask = React.createClass({
     addTask(e) {
         e.preventDefault();
 
-        Meteor.call('addTask', this.state.task, this.props.type);
+        let name = this.state.task.trim();
+
+        if (!name) {
+            alert('The task cannot be empty or with spaces only.');
+            return;
+        }
+
+        Meteor.call('addTask', name, this.props.type);
         this.setState(this.getInitialState());
     },
 

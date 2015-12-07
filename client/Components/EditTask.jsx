@@ -47,11 +47,12 @@ EditTask = React.createClass({
 
     render() {
         let editNameClasses = classNames({
-            'hidden': this.state.isInEditMode,
+            'hidden': this.state.isInEditMode
         });
 
         let editFormClasses = classNames({
-            'hidden': !this.state.isInEditMode,
+            'form-inline': true,
+            'hidden': !this.state.isInEditMode
         });
 
         return (

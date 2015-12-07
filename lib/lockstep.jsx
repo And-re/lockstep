@@ -141,8 +141,8 @@ Meteor.lockstep.isStartButtonDisabled = () => {
     let _todoTasksCount = Tasks.find({userIds: _user._id, teamId: _team._id, type: 'todo', startTime: {$exists: false}}).count();
     let _completedTasksCount;
 
-    if (_team.phase > 0) {
-        _completedTasksCount = Tasks.find({userIds: _user._id, teamId: _team._id, type: 'completed', startTime: {$exists: false}}).count();
+    if (_team.phase > 1) {
+        _completedTasksCount = Tasks.find({userIds: _user._id, teamId: _team._id, type: 'completed', phase: _team.phase - 2}).count();
     }
 
     return _todoTasksCount === 0 || (!_.isUndefined(_completedTasksCount) && _completedTasksCount === 0);
