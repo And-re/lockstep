@@ -47,18 +47,16 @@ EditTask = React.createClass({
 
     render() {
         let editNameClasses = classNames({
-            'navbar-text text-right': true,
             'hidden': this.state.isInEditMode,
         });
 
         let editFormClasses = classNames({
-            'navbar-form': true,
             'hidden': !this.state.isInEditMode,
         });
 
         return (
             <div>
-                <p className={editNameClasses} onClick={this.toggleEditMode}>{this.props.task.name}</p>
+                <span className={editNameClasses} onClick={this.toggleEditMode}>{this.props.task.name}</span>
                 <form className={editFormClasses} onSubmit={this.edit}>
                     <input type="text"
                            className="form-control"

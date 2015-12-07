@@ -31,7 +31,7 @@ Meteor.methods({
             $set: {'name': name}
         });
     },
-    cloneTask(taskId) {
+    addMeToTask(taskId) {
         check(taskId, String);
 
         let _task = Tasks.findOne({_id: taskId});
