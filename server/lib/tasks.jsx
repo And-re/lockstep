@@ -23,7 +23,7 @@ Meteor.methods({
             userIds: [this.userId]
         };
 
-        if (_team.ready) {
+        if (_team.ready && Meteor.lockstep.isWorkPhase(_team.phase)) {
             _newTask.startTime = _team.startTime;
             _newTask.phase = Math.floor(_team.phase / 2) * 2;
         } else if (type === 'completed') {
