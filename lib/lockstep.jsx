@@ -109,8 +109,12 @@ Meteor.lockstep.getPhaseName = (phase) => {
     return Meteor.lockstep.isWorkPhase(phase) ? 'Work' : 'Break';
 };
 
+Meteor.lockstep.getCurrentWorkPhaseName = (phase) => {
+    return Meteor.lockstep.getCurrentWorkPhase(phase) / 2 + 1;
+};
+
 Meteor.lockstep.getCurrentWorkPhase = (phase) => {
-    return ((phase / 2) % 3) + 1;
+    return (Math.floor(phase / 2) * 2) % 6;
 };
 
 Meteor.lockstep.setTitle = (team, secondsLeft) => {
@@ -142,9 +146,13 @@ Meteor.lockstep.isStartButtonDisabled = () => {
     let _completedTasksCount;
 
     if (_team.phase > 1) {
-        _completedTasksCount = Tasks.find({userIds: _user._id, teamId: _team._id, type: 'completed', phase: _team.phase - 2}).count();
-    }
+        let _lastPlannedTask = Tasks.findOne({teamId: _team._id, type: 'planned'}, {sort: {startTime: -1}});
 
+        if (_lastPlannedTask) {
+            _completedTasksCount = Tasks.find({userIds: _user._id, teamId: _team._id, type: 'completed', startTime: _lastPlannedTask.startTime}).count();
+        }
+    }
+    
     return _todoTasksCount === 0 || (!_.isUndefined(_completedTasksCount) && _completedTasksCount === 0);
 };
 

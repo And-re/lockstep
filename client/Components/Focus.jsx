@@ -15,12 +15,33 @@ Focus = React.createClass({
         Meteor.subscribe('myTeamTasks');
         Meteor.subscribe('myTeamIsReady');
 
+        let _team = null;
+
+        if (Meteor.user()) {
+            _team = Teams.findOne({_id: Meteor.user().currentTeam});
+        }
+
+        let _todoTasks = [];
+        let _plannedTasks = [];
+        let _completedTasks = [];
+
+        if (_team) {
+            let _lastPlannedTask = Tasks.findOne({teamId: _team._id, type: 'planned'}, {sort: {startTime: -1}});
+
+            _todoTasks = Tasks.find({type: 'todo', $or: [{startTime: {$exists: false}}, {startTime: _team.startTime}]}, {sort: {createdAt: 1}}).fetch();
+
+            if (_lastPlannedTask && (!Meteor.lockstep.isWorkPhase(_team.phase) || !_team.ready)) {
+                _plannedTasks = Tasks.find({type: 'planned', startTime: _lastPlannedTask.startTime}, {sort: {createdAt: 1}}).fetch();
+                _completedTasks = Tasks.find({type: 'completed', startTime: _lastPlannedTask.startTime}, {sort: {createdAt: 1}}).fetch();
+            }
+        }
+
         return {
             users: Meteor.users.find({}, {sort: {createdAt: 1}}).fetch(),
-            team: Teams.findOne({_id: Meteor.user().currentTeam}),
-            todoTasks: Tasks.find({type: 'todo'}, {sort: {createdAt: 1}}).fetch(),
-            plannedTasks: Tasks.find({type: 'planned'}, {sort: {createdAt: 1}}).fetch(),
-            completedTasks: Tasks.find({type: 'completed'}, {sort: {createdAt: 1}}).fetch()
+            team: _team,
+            todoTasks: _todoTasks,
+            plannedTasks: _plannedTasks,
+            completedTasks: _completedTasks
         };
     },
 

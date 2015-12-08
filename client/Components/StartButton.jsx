@@ -55,7 +55,7 @@ StartButton = React.createClass({
                         this.props.isDisabled ?
                         'Add some Task first'
                         :
-                        `Start Work Phase ${Meteor.lockstep.getCurrentWorkPhase(this.props.team.phase)}`
+                        `Start Work Phase ${Meteor.lockstep.getCurrentWorkPhaseName(this.props.team.phase)}`
                 }
             </button>
         );

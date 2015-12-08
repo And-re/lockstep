@@ -25,7 +25,7 @@ Meteor.methods({
 
         if (_team.ready && Meteor.lockstep.isWorkPhase(_team.phase)) {
             _newTask.startTime = _team.startTime;
-            _newTask.phase = Math.floor(_team.phase / 2) * 2;
+            _newTask.phase = Meteor.lockstep.getCurrentWorkPhase(_team.phase);
         } else if (type === 'completed') {
             let _lastPlannedTask = Tasks.findOne({teamId: _team._id, type: 'planned'}, {sort: {startTime: -1}});
 
