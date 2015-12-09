@@ -11,9 +11,13 @@ TasksLog = React.createClass({
         } else {
             Meteor.subscribe('myTasks');
         }
-        
+
+        let _tasks = Tasks.find({type: {$in: ['planned', 'completed']}}, {sort: {createdAt: 1}}).fetch();
+        let taskDates = distinctDates(_tasks);
+
         return {
             users: users,
+            taskDates: taskDates,
             plannedTasks: Tasks.find({type: 'planned'}, {sort: {createdAt: 1}}).fetch(),
             completedTasks: Tasks.find({type: 'completed'}, {sort: {createdAt: 1}}).fetch()
         };
@@ -22,6 +26,17 @@ TasksLog = React.createClass({
     render() {
         return (
             <div className="row">
+                <div className="col-md-12">
+                    <ul className="pagination pagination-sm">
+                        {this.data.taskDates.map((date) => {
+                            return (
+                                <li key={date}>
+                                    <a href="#">{date}</a>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </div>
                 <div className="col-md-6">
                     <div className="panel panel-primary">
                         <div className="panel-heading">Completed Tasks ({this.data.completedTasks.length})</div>
@@ -38,3 +53,13 @@ TasksLog = React.createClass({
         );
     }
 });
+
+function distinctDates(data) {
+    let dates = [];
+
+    data.forEach((doc) => {
+        dates.push(moment(doc.createdAt).format('YYYY/MM/DD'));
+    });
+
+    return _.uniq(dates);
+}
