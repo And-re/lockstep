@@ -71,17 +71,9 @@ TasksLog = React.createClass({
                             })}
                     </ul>
                 </div>
-                <div className="col-md-6">
-                    <div className="panel panel-primary">
-                        <div className="panel-heading">Completed Tasks ({this.data.completedTasks.length})</div>
-                        <TaskList tasks={this.data.completedTasks} users={this.data.users}/>
-                    </div>
-                </div>
-                <div className="col-md-6">
-                    <div className="panel panel-primary">
-                        <div className="panel-heading">Planned Tasks ({this.data.plannedTasks.length})</div>
-                        <TaskList tasks={this.data.plannedTasks} users={this.data.users}/>
-                    </div>
+                <div className="col-md-12">
+                    <GroupedTaskList plannedTasks={this.data.plannedTasks} completedTasks={this.data.completedTasks}
+                                     users={this.data.users} />
                 </div>
             </div>
         );
@@ -93,16 +85,6 @@ function distinctDates(data) {
 
     data.forEach((doc) => {
         dates.push(moment(doc.startTime).format('YYYY/MM/DD'));
-    });
-
-    return _.uniq(dates);
-}
-
-function distinctPhasesStartTime(data) {
-    let dates = [];
-
-    data.forEach((doc) => {
-        dates.push(moment(doc.startTime));
     });
 
     return _.uniq(dates);

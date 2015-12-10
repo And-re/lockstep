@@ -62,38 +62,36 @@ GroupedTaskList = React.createClass({
         return (
             <div>
                 {_groupedPlannedTasks.map((_taskList) => {
-                    return <div>
+                    return (
                         <div>
-                            <h4>Phase started
-                                at: {moment(_taskList.startTime).format('dddd YYYY/MM/DD HH:mm:ss')}</h4>
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <div className="panel panel-primary">
-                                        <div className="panel-heading">Planned tasks:</div>
+                            <div className="panel panel-primary">
+                                <div className="panel-heading">
+                                    Phase started at: {moment(_taskList.startTime).format('dddd YYYY/MM/DD HH:mm:ss')}
+                                </div>
+                                <div className="row container">
+                                    <div className="col-md-6">
+                                        <h4>Planned tasks: ({_taskList.plannedTasks.length})</h4>
                                         <ul className="list-group">
                                             {_taskList.plannedTasks.map((task) => {
                                                 return <Task key={task._id} task={task}
                                                              showActions={this.props.showActions}/>;
-                                                })}
+                                            })}
                                         </ul>
                                     </div>
-                                </div>
-                                <div className="col-md-6">
-                                    <div className="panel panel-primary">
-                                        <div className="panel-heading">Completed tasks:</div>
+                                    <div className="col-md-6">
+                                        <h4>Completed tasks: ({_taskList.completedTasks.length})</h4>
                                         <ul className="list-group">
                                             {_taskList.completedTasks.map((task) => {
                                                 return <Task key={task._id} task={task}
                                                              showActions={this.props.showActions}/>;
-                                                })}
+                                            })}
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    })}
+                    );
+                })}
             </div>
         );
     }
