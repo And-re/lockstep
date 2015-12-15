@@ -37,8 +37,10 @@ AddTask = React.createClass({
 
         let placeholder = `Add ${this.props.type} task description`;
 
+        let _formId = `${this.props.type}-task`;
+
         return (
-            <form id="add-task" onSubmit={this.addTask} className="row">
+            <form id={_formId} onSubmit={this.addTask} className="row add-task">
                 <div className="col-sm-8">
                     <input type="text"
                            className="form-control"

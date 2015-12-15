@@ -19,23 +19,36 @@ Feature: Two users at the same time
     Then Bob should see the team is private
 
   Scenario: One user starts and waits
-#    When Bob adds a task
-    When Bob clicks start
+    When Bob adds a "todo" task
+    And Bob clicks start
     Then Bob should not see the timer
 
   Scenario: Both users clicked start
-    When Alice clicks start
+    When Alice adds a "todo" task
+    And Alice clicks start
     Then Bob should see the timer
     And Alice should see the timer
     And Bob should have the timer decreasing using "workTime"
     And Bob should have the timer decreasing using "shortRestTime"
+    And Alice waits for the "Add some Task first" button
+    And Alice adds a "todo" task
+    And Alice adds a "completed" task
     And Alice waits for the "Start Work Phase 2" button
     And Alice clicks start
+    And Bob waits for the "Add some Task first" button
+    And Bob adds a "todo" task
+    And Bob adds a "completed" task
     And Bob clicks start
     And Bob should have the timer decreasing using "workTime"
     And Bob should have the timer decreasing using "shortRestTime"
+    And Alice waits for the "Add some Task first" button
+    And Alice adds a "todo" task
+    And Alice adds a "completed" task
     And Alice waits for the "Start Work Phase 3" button
     And Alice clicks start
+    And Bob waits for the "Add some Task first" button
+    And Bob adds a "todo" task
+    And Bob adds a "completed" task
     And Bob clicks start
     And Bob should have the timer decreasing using "workTime"
     And Bob should have the timer decreasing using "longRestTime"

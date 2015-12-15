@@ -13,8 +13,8 @@ module.exports = function () {
      * Definitions
      */
     this.Given(/^There (is|are) (one|two) user(s)?$/, function () {
-        browsers.Alice = browser.browsers[0];
-        browsers.Bob = browser.browsers[1];
+        browsers.Alice = browser.instances[0];
+        browsers.Bob = browser.instances[1];
 
         this.server.call('reset');
         timers.shortRestTime = 0.05;
@@ -90,6 +90,15 @@ module.exports = function () {
         }, direction).value;
         var _nameContainer = '.cucumber-user=' + _name;
         browsers[person].waitForExist(_nameContainer);
+    });
+
+    this.When(/^([^ ]*) adds a "([^"]*)" task$/, function(person, taskType) {
+        var _taskInput = '#' + taskType + '-task input[type=text]';
+        var _taskButton = '#' + taskType + '-task [type=submit]';
+        browsers[person].waitForExist(_taskInput);
+        browsers[person].setValue(_taskInput, taskType);
+        browsers[person].waitForExist(_taskButton);
+        browsers[person].click(_taskButton);
     });
 
     this.When(/^([^ ]*) clicks start$/, function(person) {
