@@ -44,6 +44,17 @@ Task = React.createClass({
                     >
                         <span className="glyphicon glyphicon-duplicate"></span>
                     </button>
+                    {this.props.task.type === 'planned' ?
+                        <button type="button"
+                                className="btn btn-xs btn-default"
+                                onClick={this.copyToCompleted}
+                                title="Copy to Completed Tasks"
+                        >
+                            <span className="glyphicon glyphicon-copy"></span>
+                        </button>
+                        :
+                        null
+                    }
                 </div>
             </div>
         );
@@ -59,6 +70,10 @@ Task = React.createClass({
 
     moveToCompleted() {
         Meteor.call('moveTask', this.props.task._id, 'completed');
+    },
+
+    copyToCompleted() {
+        Meteor.call('copyTask', this.props.task._id, 'completed');
     },
 
     addMeToTask() {

@@ -64,6 +64,21 @@ Meteor.methods({
             $addToSet: {userIds: this.userId}
         });
     },
+    copyTask(taskId, type) {
+        check(taskId, String);
+        check(type, String);
+
+        if (!Meteor.lockstep.isValidTaskType(type)) {
+            return false;
+        }
+
+        let _task = Tasks.findOne({_id: taskId});
+        _task.type = type;
+        _task.createdAt = new Date();
+        delete _task._id;
+
+        return Tasks.insert(_task);
+    },
     moveTask(taskId, type) {
         check(taskId, String);
         check(type, String);
