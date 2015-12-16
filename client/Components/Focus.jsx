@@ -79,15 +79,9 @@ Focus = React.createClass({
                                 <div>
                                     <AddTask type="todo" team={this.data.team} />
 
-                                    {this.data.team.phase > 0 ?
-                                        <div>
-                                            <hr />
+                                    <hr />
 
-                                            <AddTask type="completed" team={this.data.team} />
-                                        </div>
-                                        :
-                                        ''
-                                    }
+                                    <AddTask type="completed" team={this.data.team} />
 
                                     <br />
 

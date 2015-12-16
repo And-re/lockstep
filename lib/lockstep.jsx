@@ -72,7 +72,7 @@ Meteor.lockstep.nextTimerPhase = (teamId, _nextPhaseShouldAutostart) => {
         return;
     }
 
-    let _newPhase = _team.phase + 1;
+    let _newPhase = (_team.phase + 1) % Meteor.lockstep.timer.length;
 
     if (_nextPhaseShouldAutostart) {
         Teams.update(_team._id, {
@@ -145,14 +145,12 @@ Meteor.lockstep.isStartButtonDisabled = () => {
     let _todoTasksCount = Tasks.find({userIds: _user._id, teamId: _team._id, type: 'todo', startTime: {$exists: false}}).count();
     let _completedTasksCount;
 
-    if (_team.phase > 1) {
-        let _lastPlannedTask = Tasks.findOne({teamId: _team._id, type: 'planned'}, {sort: {startTime: -1}});
+    let _lastPlannedTask = Tasks.findOne({teamId: _team._id, type: 'planned'}, {sort: {startTime: -1}});
 
-        if (_lastPlannedTask) {
-            _completedTasksCount = Tasks.find({userIds: _user._id, teamId: _team._id, type: 'completed', startTime: _lastPlannedTask.startTime}).count();
-        }
+    if (_lastPlannedTask) {
+        _completedTasksCount = Tasks.find({userIds: _user._id, teamId: _team._id, type: 'completed', startTime: _lastPlannedTask.startTime}).count();
     }
-    
+
     return _todoTasksCount === 0 || (!_.isUndefined(_completedTasksCount) && _completedTasksCount === 0);
 };
 
