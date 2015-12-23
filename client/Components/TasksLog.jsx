@@ -43,11 +43,9 @@ TasksLog = React.createClass({
         };
     },
 
-    filterDate(event) {
-        let _selectedDate = event.target.innerText;
-
+    filterDate(date) {
         this.setState({
-            selectedDate: (this.state.selectedDate === _selectedDate) ? false : _selectedDate
+            selectedDate: (this.state.selectedDate === date) ? false : date
         });
     },
 
@@ -64,11 +62,11 @@ TasksLog = React.createClass({
                     <ul className="pagination pagination-sm">
                         {this.data.taskDates.map((date) => {
                             return (
-                            <li className={dateClasses(this, date)} key={date} onClick={this.filterDate}>
-                                <a href="#">{date}</a>
-                            </li>
-                                );
-                            })}
+                                <li className={dateClasses(this, date)} key={date} onClick={this.filterDate.bind(this, date)}>
+                                    <a href="#">{date}</a>
+                                </li>
+                            );
+                        })}
                     </ul>
                 </div>
                 <div className="col-md-12">
@@ -87,5 +85,5 @@ function distinctDates(data) {
         dates.push(moment(doc.startTime).format('YYYY/MM/DD'));
     });
 
-    return _.uniq(dates);
+    return _.uniq(dates).sort();
 }
