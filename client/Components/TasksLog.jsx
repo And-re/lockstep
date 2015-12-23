@@ -11,7 +11,7 @@ TasksLog = React.createClass({
         let users;
 
         if (Meteor.user() && Meteor.user().isAdmin) {
-            Meteor.subscribe('teamMembers');
+            Meteor.subscribe('allUsers');
             Meteor.subscribe('tasks');
             users = Meteor.users.find({}, {sort: {createdAt: 1}}).fetch();
         } else {

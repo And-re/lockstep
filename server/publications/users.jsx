@@ -22,6 +22,13 @@ Meteor.publish('teamMembers', function () {
     );
 });
 
+Meteor.publish('allUsers', function () {
+    return Meteor.users.find(
+        {},
+        {fields: {createdAt: 1, currentTeam: 1, 'profile.name': 1, ready: 1}}
+    );
+});
+
 Meteor.publish('myTeamIsReady', function () {
     if (!this.userId) {
         return this.ready();
