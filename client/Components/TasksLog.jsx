@@ -2,8 +2,13 @@ TasksLog = React.createClass({
     mixins: [ReactMeteorData],
 
     getInitialState() {
+        let _selectedDate = false;
+        let _lastTask = Tasks.findOne({type: {$in: ['planned', 'completed']}}, {sort: {createdAt: -1}});
+        if (_lastTask) {
+            _selectedDate = moment(_lastTask.startTime).format('YYYY/MM/DD');
+        }
         return {
-            selectedDate: false
+            selectedDate: _selectedDate
         }
     },
 
