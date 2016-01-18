@@ -26,8 +26,9 @@ maxharris9:classnames
 momentjs:moment
 accounts-password
 mizzao:user-status
-xolvio:cucumber
 force-ssl
 oaf:html5-desktop-notifications
 accounts-google
 service-configuration
+sanjo:jasmine
+velocity:html-reporter
