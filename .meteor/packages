@@ -32,3 +32,4 @@ accounts-google
 service-configuration
 sanjo:jasmine
 velocity:html-reporter
+fixtures

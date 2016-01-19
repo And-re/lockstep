@@ -25,6 +25,14 @@ module.exports = function () {
 
     this.When(/^([^ ]*) go(?:es)? to "([^"]*)"$/, function (person, relativePath) {
         getBrowserFor(person).url(url.resolve(process.env.ROOT_URL, relativePath));
+
+        getBrowserFor(person).execute(function () {
+            $('#velocityOverlay, #velocity-status-widget').remove();
+
+            setTimeout(function() {
+                $('#velocityOverlay, #velocity-status-widget').remove();
+            }, 500)
+        });
     });
 
     this.When(/^([^ ]*) should not be logged in$/, function (person) {
