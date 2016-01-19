@@ -1,6 +1,5 @@
 Meteor.methods({
     'reset': function () {
-        console.log('reset PINGWIN', Meteor);
         Tasks.remove({});
         Teams.remove({});
         Meteor.users.remove({});
