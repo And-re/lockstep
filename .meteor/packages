@@ -18,7 +18,7 @@ ecmascript              # Enable ECMAScript2015+ syntax in app code
 
 twbs:bootstrap
 check
-react
+react@=0.14.1_1
 practicalmeteor:faker
 kadira:flow-router
 kadira:react-layout
