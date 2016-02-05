@@ -17,5 +17,5 @@ Meteor.publish('myTeamTasks', function () {
 
     let _user = Meteor.users.findOne({_id: this.userId});
 
-    return Tasks.find({teamId: _user.currentTeam});
+    return Tasks.find({teamId: _user.currentTeam}, {sort: {createdAt: -1}, limit: 100});
 });
