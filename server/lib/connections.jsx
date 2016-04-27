@@ -3,7 +3,7 @@ UserStatus.events.on('connectionLogout', function (fields) {
     Teams.remove({userIds: {$size: 0}});
     let _user = Meteor.users.findOne({_id: fields.userId});
 
-    Meteor.users.update({_id: fields.userId}, {$set: {currentTeam: null, ready: false, lastTeamId: _user.currentTeamId}});
+    Meteor.users.update({_id: fields.userId}, {$set: {currentTeam: null, ready: false, lastTeamId: _user.currentTeam}});
 });
 
 UserStatus.events.on('connectionLogin', function(fields) {
